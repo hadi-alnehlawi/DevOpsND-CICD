@@ -9,9 +9,18 @@ Parameters:
   ImageId:
     Description: EC2 Image ID
     Type: String
-    Default: ami-09e67e426f25ce0d7  
+    Default: ami-09e67e426f25ce0d7
+  InstanceType:
+    Description: EC2 Instance Type ex. t2.micro
+    Type: String
+    Default: t2.micro
+  EC2KeyPair:
+    Description: EC2 Key Pair to be used for ssh connection
+    Type: String
+    Default: udacity
     
-
+    
+    
 Resources:
   InstanceSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -34,12 +43,13 @@ Resources:
   EC2Instance:
     Type: AWS::EC2::Instance
     Properties:
-      InstanceType: t2.micro
+      SubnetId:
+        Fn::ImportValue:
+          !Sub "${Workflow}-PUB1-SN"
+      InstanceType: !Ref InstanceType
       SecurityGroups:
         - Ref: InstanceSecurityGroup
-      KeyName: udacity # If you use another key pair name, you should change this value to match.
-      # If this ami id is not available for you, you can find another (https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/finding-an-ami.html)
-      # Ubuntu 18 or higher works fine
+      KeyName: !Ref EC2KeyPair
       ImageId: !Ref ImageId 
       Tags:
         - Key: Name
