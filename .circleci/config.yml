@@ -310,7 +310,7 @@ jobs:
       - run:
           name: Hello Wolrd
           command: |
-            echo "HELLO CIRLCE CI"
+            echo ${CIRCLE_WORKFLOW_ID}
 
 
 workflows:
