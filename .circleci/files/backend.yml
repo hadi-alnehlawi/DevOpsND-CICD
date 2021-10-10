@@ -57,4 +57,4 @@ Outputs:
     Value: !Ref EC2Instance
     Export:
       Key: EC2-Public-DNS
-      Name: !GetAtt EC2Instance.PublicDnsName 
+      Name: !Sub ${Workflow}-EC2

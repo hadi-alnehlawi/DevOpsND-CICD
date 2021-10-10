@@ -152,26 +152,29 @@ jobs:
             aws cloudformations deploy \
               --template-file .circleci/files/backend.yml \
               --tags env=udacpeople \
-              --stack-name "backend-udapeople-${WORK_ID}" \
-              --parameter-overrides ID="${WORK_ID}"
+              --stack-name "backend-udapeople-${WORKFLOW}" \
+              --parameter-overrides ID="${WORKFLOW}"
       - run:
           name: Ensure front-end infrastructure exist
           command: |
             aws cloudformations deploy \
               --template-file .circleci/files/frontend.yml \
               --tags env=udacpeople \
-              --stack-name "fronend-udapeople-${WORK_ID}" \
-              --parameter-overrides ID="${WORK_ID}"  
-      # - run:
-      #     name: Add back-end ip to ansible inventory
-      #     command: |
-      #       # Your code here
-      #       exit 1
-      # - persist_to_workspace:
-      #     root: ~/
-      #     paths:
-      #       - project/.circleci/ansible/inventory.txt
-      # # Here's where you will add some code to rollback on failure      
+              --stack-name "fronend-udapeople-${WORKFLOW}" \
+              --parameter-overrides ID="${WORKFLOW}"  
+      - run:
+          name: Add back-end ip to ansible inventory
+          working_directory: ./.circleci/ansible
+          command: |
+            aws ec2 describe-instances \
+            --query 'Reservations[*].Instances[*].PublicIpAddress' \
+            --filters "Name=tag:env,Values=backend-${Workflow}" \
+            --output text > inventory.txt
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project/.circleci/ansible/inventory.txt
+      # Here's where you will add some code to rollback on failure      
 
   # configure-infrastructure:
   #   docker:
@@ -310,7 +313,7 @@ jobs:
       - run:
           name: Hello Wolrd
           command: |
-            echo ${WORK_ID}
+            echo ${WORKFLOW}
 
 
 workflows:
