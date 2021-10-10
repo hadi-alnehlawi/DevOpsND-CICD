@@ -1,9 +1,10 @@
 Description: >
   UdaPeople networking stack.
 Parameters:
-  EnvironmentName:
+  Workflow:
     Description: An environment name that will be prefixed to resource names
     Type: String
+    Default: 272091f
 
   VpcCIDR:
     Description: Please enter the IP range (CIDR notation) for this VPC
@@ -38,15 +39,13 @@ Resources:
       EnableDnsHostnames: true
       Tags:
         - Key: Name
-          Value: !Ref EnvironmentName
+          Value: !Ref Workflow
 
   InternetGateway:
     Type: AWS::EC2::InternetGateway
     Properties:
       Tags:
-        - Key: Name
-          Value: !Ref EnvironmentName
-
+        - Key: Workflow
   InternetGatewayAttachment:
     Type: AWS::EC2::VPCGatewayAttachment
     Properties:
@@ -62,7 +61,7 @@ Resources:
       MapPublicIpOnLaunch: true
       Tags:
         - Key: Name
-          Value: !Sub ${EnvironmentName} Public Subnet (AZ1)
+          Value: !Sub ${Workflow} Public Subnet (AZ1)
 
   PublicSubnet2:
     Type: AWS::EC2::Subnet
@@ -73,7 +72,7 @@ Resources:
       MapPublicIpOnLaunch: true
       Tags:
         - Key: Name
-          Value: !Sub ${EnvironmentName} Public Subnet (AZ2)
+          Value: !Sub ${Workflow} Public Subnet (AZ2)
 
   PrivateSubnet1:
     Type: AWS::EC2::Subnet
@@ -84,7 +83,7 @@ Resources:
       MapPublicIpOnLaunch: false
       Tags:
         - Key: Name
-          Value: !Sub ${EnvironmentName} Private Subnet (AZ1)
+          Value: !Sub ${Workflow} Private Subnet (AZ1)
 
   PrivateSubnet2:
     Type: AWS::EC2::Subnet
@@ -95,7 +94,7 @@ Resources:
       MapPublicIpOnLaunch: false
       Tags:
         - Key: Name
-          Value: !Sub ${EnvironmentName} Private Subnet (AZ2)
+          Value: !Sub ${Workflow} Private Subnet (AZ2)
 
   NatGateway1EIP:
     Type: AWS::EC2::EIP
@@ -127,7 +126,7 @@ Resources:
       VpcId: !Ref VPC
       Tags:
         - Key: Name
-          Value: !Sub ${EnvironmentName} Public Routes
+          Value: !Sub ${Workflow} Public Routes
 
   DefaultPublicRoute:
     Type: AWS::EC2::Route
@@ -155,7 +154,7 @@ Resources:
       VpcId: !Ref VPC
       Tags:
         - Key: Name
-          Value: !Sub ${EnvironmentName} Private Routes (AZ1)
+          Value: !Sub ${Workflow} Private Routes (AZ1)
 
   DefaultPrivateRoute1:
     Type: AWS::EC2::Route
@@ -176,7 +175,7 @@ Resources:
       VpcId: !Ref VPC
       Tags:
         - Key: Name
-          Value: !Sub ${EnvironmentName} Private Routes (AZ2)
+          Value: !Sub ${Workflow} Private Routes (AZ2)
 
   DefaultPrivateRoute2:
     Type: AWS::EC2::Route
@@ -195,57 +194,59 @@ Outputs:
   VPC:
     Description: A reference to the created VPC
     Value: !Ref "VPC"
+    Export:
+      Name: !Sub ${Workflow}-VPCID
 
   VPCPublicRouteTable:
     Description: Public Routing
     Value: !Ref PublicRouteTable
     Export:
-      Name: !Sub ${EnvironmentName}-PUB-RT
+      Name: !Sub ${Workflow}-PUB-RT
 
   VPCPrivateRouteTable1:
     Description: Private Routing AZ1
     Value: !Ref PrivateRouteTable1
     Export:
-      Name: !Sub ${EnvironmentName}-PRI1-RT
+      Name: !Sub ${Workflow}-PRI1-RT
 
   VPCPrivateRouteTable2:
     Description: Private Routing AZ2
     Value: !Ref PrivateRouteTable2
     Export:
-      Name: !Sub ${EnvironmentName}-PRI2-RT
+      Name: !Sub ${Workflow}-PRI2-RT
 
   PublicSubnets:
     Description: A list of the public subnets
     Value: !Join [",", [!Ref PublicSubnet1, !Ref PublicSubnet2]]
     Export:
-      Name: !Sub ${EnvironmentName}-PUB-NETS
+      Name: !Sub ${Workflow}-PUB-NETS
 
   PrivateSubnets:
     Description: A list of the private subnets
     Value: !Join [",", [!Ref PrivateSubnet1, !Ref PrivateSubnet2]]
     Export:
-      Name: !Sub ${EnvironmentName}-PRIV-NETS
+      Name: !Sub ${Workflow}-PRIV-NETS
 
   PublicSubnet1:
     Description: A reference to the public subnet in the 1st Availability Zone
     Value: !Ref PublicSubnet1
     Export:
-      Name: !Sub ${EnvironmentName}-PUB1-SN
+      Name: !Sub ${Workflow}-PUB1-SN
 
   PublicSubnet2:
     Description: A reference to the public subnet in the 2nd Availability Zone
     Value: !Ref PublicSubnet2
     Export:
-      Name: !Sub ${EnvironmentName}-PUB2-SN
+      Name: !Sub ${Workflow}-PUB2-SN
 
   PrivateSubnet1:
     Description: A reference to the private subnet in the 1st Availability Zone
     Value: !Ref PrivateSubnet1
     Export:
-      Name: !Sub ${EnvironmentName}-PRI1-SN
+      Name: !Sub ${Workflow}-PRI1-SN
 
   PrivateSubnet2:
     Description: A reference to the private subnet in the 2nd Availability Zone
     Value: !Ref PrivateSubnet2
     Export:
-      Name: !Sub ${EnvironmentName}-PRI2-SN
+      Name: !Sub ${Workflow}-PRI2-SN

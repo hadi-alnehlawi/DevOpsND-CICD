@@ -5,11 +5,15 @@ Parameters:
   ID:
     Description: Unique identifier.
     Type: String
+    Default: 272091f
 
 Resources:
   InstanceSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
+      VpcId:
+        Fn::ImportValue:
+          !Sub "${ID}-VPCID"
       GroupName: !Sub UdaPeople-${ID}
       GroupDescription: Allow port 22 and port 3030.
       SecurityGroupIngress:
