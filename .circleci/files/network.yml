@@ -39,7 +39,7 @@ Resources:
       EnableDnsHostnames: true
       Tags:
         - Key: Name
-          Value: !Ref Workflow
+          Value: !Sub ${Workflow} VPC 
 
   InternetGateway:
     Type: AWS::EC2::InternetGateway
