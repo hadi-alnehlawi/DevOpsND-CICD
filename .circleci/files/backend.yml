@@ -1,0 +1,69 @@
+Description: >
+  UdaPeople backend stack.
+
+Parameters:
+  WORKFLOW:
+    Description: Unique identifier.
+    Type: String
+    Default: 272091f
+  ImageId:
+    Description: EC2 Image ID
+    Type: String
+    Default: ami-0ed2b3edeb28afa59
+  InstanceType:
+    Description: EC2 Instance Type ex. t2.micro
+    Type: String
+    Default: t2.micro
+  EC2KeyPair:
+    Description: EC2 Key Pair to be used for ssh connection
+    Type: String
+    Default: udacity
+
+Resources:
+  EC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      SecurityGroups:
+        - Ref: InstanceSecurityGroup
+      # SubnetId:
+      #   Fn::ImportValue:
+      #     !Sub "${WORKFLOW}-PUB1-SN"
+      # SecurityGroups: 
+      #   - Fn::ImportValue: 
+      #       !Sub "${WORKFLOW}-SEC-GROUP"
+      InstanceType: !Ref InstanceType
+      KeyName: !Ref EC2KeyPair
+      ImageId: !Ref ImageId 
+      Tags:
+        - Key: Name
+          Value: !Sub backend-${WORKFLOW}
+
+  InstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: !Sub UdaPeople1-${WORKFLOW}
+      GroupDescription: Allow port 22 and port 3030.
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 3030
+          ToPort: 3030
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 9100
+          ToPort: 9100
+          CidrIp: 0.0.0.0/0
+
+
+
+Outputs:
+  EC2PublicDns:
+    Description: A reference to the created EC2 URL
+    Value: !GetAtt EC2Instance.PublicDnsName
+    Export:
+      Key: EC2Instance
+      Name: !Sub ${WORKFLOW}-EC2
+
