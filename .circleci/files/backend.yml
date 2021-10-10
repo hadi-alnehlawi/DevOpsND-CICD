@@ -47,8 +47,6 @@ Resources:
         Fn::ImportValue:
           !Sub "${Workflow}-PUB1-SN"
       InstanceType: !Ref InstanceType
-      SecurityGroups:
-        - Ref: InstanceSecurityGroup
       KeyName: !Ref EC2KeyPair
       ImageId: !Ref ImageId 
       Tags:
