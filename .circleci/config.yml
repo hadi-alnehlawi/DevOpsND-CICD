@@ -172,13 +172,14 @@ jobs:
               --output text > inventory.txt
             cat inventory.txt
       - persist_to_workspace:
-          root: .
+          root: .circleci/ansible
           paths:
-            - .circleci/ansible/inventory.txt
+            - inventory.txt
       # Here's where you will add some code to rollback on failure      
 
   configure-infrastructure:
-    executor: python
+    docker:
+      - image: python:3.7-alpine3.11
       # Docker image here that supports Ansible
     steps:
       # Checkout code from git
@@ -188,18 +189,23 @@ jobs:
           fingerprints: ["f6:ad:ae:05:b5:0c:ae:88:d8:7b:1c:b4:39:ed:9a:bc"]
       # attach workspace
       - attach_workspace:
-          at: .
+          at: /tmp/.circleci/ansible
       - run:
           name: Install dependencies
           working_directory: ./.circleci/ansible
           command: |
-            apk add --update tar gzip ansible curl
-            pip install awscli
+            apk add --no-cache \
+            python3 \
+            py3-pip \
+            && pip3 install --upgrade pip \
+            && pip3 install \
+            awscli \
+            && rm -rf /var/cache/apk/*
+            apk add --update ansible
       - run:
           name: Configure server
-          working_directory: ./.circleci/ansible
           command: |
-            ansible-playbook -i inventory.txt configure-server.yml
+            ansible-playbook -i /tmp/.circleci/ansible/inventory.txt .circleci/ansible/configure-server.yml
       # Here's where you will add some code to rollback on failure      
 
   # run-migrations:
