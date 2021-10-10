@@ -2,15 +2,16 @@ Description: >
   UdaPeople frontend stack.
 
 Parameters:
-  ID:
+  Workflow:
     Description: Unique identifier.
     Type: String
+    Default: 272091f
 
 Resources:
   WebsiteBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: !Sub "udapeople-${ID}"
+      BucketName: !Sub "udapeople-${Workflow}"
       AccessControl: PublicRead
       WebsiteConfiguration:
         IndexDocument: index.html

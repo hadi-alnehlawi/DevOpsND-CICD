@@ -19,8 +19,6 @@ Parameters:
     Type: String
     Default: udacity
     
-    
-    
 Resources:
   InstanceSecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -52,3 +50,11 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub backend-${Workflow}
+
+Outputs:
+  VPC:
+    Description: A reference to the created EC2 URL
+    Value: !Ref EC2Instance
+    Export:
+      Key: EC2-Public-DNS
+      Name: !GetAtt EC2Instance.PublicDnsName 
