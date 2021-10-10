@@ -319,32 +319,23 @@ jobs:
 #             then
 #               # your code here
 #             fi
-  hello:
-    docker:
-      - image: cimg/base:2021.04
-    steps:
-      - run:
-          name: Hello Wolrd
-          command: |
-            echo ${WORKFLOW}
 
 
 workflows:
   default:
     jobs:
-      - hello
-      - build-frontend
-      - build-backend
-      - test-frontend:
-          requires: [build-frontend]
-      - test-backend:
-          requires: [build-backend]
-      - scan-backend:
-          requires: [build-backend]
-      - scan-frontend:
-          requires: [build-frontend]
+      # - build-frontend
+      # - build-backend
+      # - test-frontend:
+      #     requires: [build-frontend]
+      # - test-backend:
+      #     requires: [build-backend]
+      # - scan-backend:
+      #     requires: [build-backend]
+      # - scan-frontend:
+      #     requires: [build-frontend]
       - deploy-infrastructure:
-          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+          # requires: [test-frontend, test-backend, scan-frontend, scan-backend]
           filters:
             branches:
               only: [main]
