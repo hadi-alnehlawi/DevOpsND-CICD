@@ -1,0 +1,12 @@
+*.csv
+# Terraform
+.terraform/
+**/.terraform/
+**/terraform.tfstate.*
+**/terraform.tfstate
+**/.terraform.tfstate.lock.info
+**/.terraform.lock.hcl
+**/*.plan
+**/output/
+**/*-aks-flux/\
+/screenshots
