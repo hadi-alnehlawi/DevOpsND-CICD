@@ -167,9 +167,10 @@ jobs:
           working_directory: ./.circleci/ansible
           command: |
             aws ec2 describe-instances \
-            --query 'Reservations[*].Instances[*].PublicIpAddress' \
-            --filters "Name=tag:env,Values=backend-${Workflow}" \
-            --output text > inventory.txt
+              --query 'Reservations[*].Instances[*].PublicIpAddress' \
+              --filters "Name=tag:Name,Values=backend-${WORKFLOW}" \
+              --output text > inventory.txt
+            cat inventory.txt
       - persist_to_workspace:
           root: ~/
           paths:
