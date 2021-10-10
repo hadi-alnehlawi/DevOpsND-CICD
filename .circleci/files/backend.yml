@@ -2,7 +2,7 @@ Description: >
   UdaPeople backend stack.
 
 Parameters:
-  Workflow:
+  WORKFLOW:
     Description: Unique identifier.
     Type: String
     Default: 272091f
@@ -25,8 +25,8 @@ Resources:
     Properties:
       VpcId:
         Fn::ImportValue:
-          !Sub "${Workflow}-VPCID"
-      GroupName: !Sub UdaPeople-${Workflow}
+          !Sub "${WORKFLOW}-VPCID"
+      GroupName: !Sub UdaPeople-${WORKFLOW}
       GroupDescription: Allow port 22 and port 3030.
       SecurityGroupIngress:
         - IpProtocol: tcp
@@ -43,13 +43,13 @@ Resources:
     Properties:
       SubnetId:
         Fn::ImportValue:
-          !Sub "${Workflow}-PUB1-SN"
+          !Sub "${WORKFLOW}-PUB1-SN"
       InstanceType: !Ref InstanceType
       KeyName: !Ref EC2KeyPair
       ImageId: !Ref ImageId 
       Tags:
         - Key: Name
-          Value: !Sub backend-${Workflow}
+          Value: !Sub backend-${WORKFLOW}
 
 Outputs:
   VPC:
@@ -57,4 +57,4 @@ Outputs:
     Value: !Ref EC2Instance
     Export:
       Key: EC2-Public-DNS
-      Name: !Sub ${Workflow}-EC2
+      Name: !Sub ${WORKFLOW}-EC2

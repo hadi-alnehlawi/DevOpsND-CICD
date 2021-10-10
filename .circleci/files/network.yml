@@ -1,7 +1,7 @@
 Description: >
   UdaPeople networking stack.
 Parameters:
-  Workflow:
+  WORKFLOW:
     Description: An environment name that will be prefixed to resource names
     Type: String
     Default: 272091f
@@ -30,14 +30,14 @@ Resources:
       EnableDnsHostnames: true
       Tags:
         - Key: Name
-          Value: !Sub ${Workflow} VPC 
+          Value: !Sub ${WORKFLOW} VPC 
 
   InternetGateway:
     Type: AWS::EC2::InternetGateway
     Properties:
       Tags:
         - Key: Name
-          Value: !Sub ${Workflow} InternetGateway 
+          Value: !Sub ${WORKFLOW} InternetGateway 
 
   InternetGatewayAttachment:
     Type: AWS::EC2::VPCGatewayAttachment
@@ -54,7 +54,7 @@ Resources:
       MapPublicIpOnLaunch: true
       Tags:
         - Key: Name
-          Value: !Sub ${Workflow} Public Subnet (AZ1)
+          Value: !Sub ${WORKFLOW} Public Subnet (AZ1)
 
   PublicSubnet2:
     Type: AWS::EC2::Subnet
@@ -65,7 +65,7 @@ Resources:
       MapPublicIpOnLaunch: true
       Tags:
         - Key: Name
-          Value: !Sub ${Workflow} Public Subnet (AZ2)
+          Value: !Sub ${WORKFLOW} Public Subnet (AZ2)
 
   NatGateway1EIP:
     Type: AWS::EC2::EIP
@@ -97,7 +97,7 @@ Resources:
       VpcId: !Ref VPC
       Tags:
         - Key: Name
-          Value: !Sub ${Workflow} Public Routes
+          Value: !Sub ${WORKFLOW} Public Routes
 
   DefaultPublicRoute:
     Type: AWS::EC2::Route
@@ -125,28 +125,28 @@ Outputs:
     Description: A reference to the created VPC
     Value: !Ref "VPC"
     Export:
-      Name: !Sub ${Workflow}-VPCID
+      Name: !Sub ${WORKFLOW}-VPCID
 
   VPCPublicRouteTable:
     Description: Public Routing
     Value: !Ref PublicRouteTable
     Export:
-      Name: !Sub ${Workflow}-PUB-RT
+      Name: !Sub ${WORKFLOW}-PUB-RT
 
   PublicSubnets:
     Description: A list of the public subnets
     Value: !Join [",", [!Ref PublicSubnet1, !Ref PublicSubnet2]]
     Export:
-      Name: !Sub ${Workflow}-PUB-NETS
+      Name: !Sub ${WORKFLOW}-PUB-NETS
 
   PublicSubnet1:
     Description: A reference to the public subnet in the 1st Availability Zone
     Value: !Ref PublicSubnet1
     Export:
-      Name: !Sub ${Workflow}-PUB1-SN
+      Name: !Sub ${WORKFLOW}-PUB1-SN
 
   PublicSubnet2:
     Description: A reference to the public subnet in the 2nd Availability Zone
     Value: !Ref PublicSubnet2
     Export:
-      Name: !Sub ${Workflow}-PUB2-SN
+      Name: !Sub ${WORKFLOW}-PUB2-SN
