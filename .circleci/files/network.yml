@@ -45,7 +45,9 @@ Resources:
     Type: AWS::EC2::InternetGateway
     Properties:
       Tags:
-        - Key: !Sub ${Workflow} InternetGateway 
+        - Key: Name
+          Value: !Sub ${Workflow} InternetGateway 
+
   InternetGatewayAttachment:
     Type: AWS::EC2::VPCGatewayAttachment
     Properties:
