@@ -171,6 +171,13 @@ jobs:
               --filters "Name=tag:Name,Values=backend-${WORKFLOW}" \
               --output text > inventory.txt
             cat inventory.txt
+      - run:
+            name: Dependencies
+            command: |
+              cat .circleci/ansible/inventory.txt
+              ls ~/project/.circleci/ansible/
+              cat ~/project/.circleci/ansible/inventory.txt
+              yum -y install tar gzip jq npm
       - persist_to_workspace:
           root: .circleci/ansible
           paths:
