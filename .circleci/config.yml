@@ -196,7 +196,7 @@ jobs:
           fingerprints: ["f6:ad:ae:05:b5:0c:ae:88:d8:7b:1c:b4:39:ed:9a:bc"]
       # attach workspace
       - attach_workspace:
-          at: /tmp/.circleci/ansible
+          at: .circleci/ansible
       - run:
           name: Install dependencies
           working_directory: ./.circleci/ansible
@@ -212,7 +212,7 @@ jobs:
       - run:
           name: Configure server
           command: |
-            ansible-playbook -i /tmp/.circleci/ansible/inventory.txt .circleci/ansible/configure-server.yml
+            ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/configure-server.yml
       # Here's where you will add some code to rollback on failure      
 
   run-migrations:
