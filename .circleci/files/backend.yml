@@ -20,23 +20,6 @@ Parameters:
     Default: udacity
     
 Resources:
-  InstanceSecurityGroup:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      VpcId:
-        Fn::ImportValue:
-          !Sub "${WORKFLOW}-VPCID"
-      GroupName: !Sub UdaPeople-${WORKFLOW}
-      GroupDescription: Allow port 22 and port 3030.
-      SecurityGroupIngress:
-        - IpProtocol: tcp
-          FromPort: 22
-          ToPort: 22
-          CidrIp: 0.0.0.0/0
-        - IpProtocol: tcp
-          FromPort: 3030
-          ToPort: 3030
-          CidrIp: 0.0.0.0/0
 
   EC2Instance:
     Type: AWS::EC2::Instance
@@ -44,6 +27,9 @@ Resources:
       SubnetId:
         Fn::ImportValue:
           !Sub "${WORKFLOW}-PUB1-SN"
+      # SecurityGroups: 
+      #   - Fn::ImportValue:
+      #       !Sub "${WORKFLOW}-SEC-GROUP"
       InstanceType: !Ref InstanceType
       KeyName: !Ref EC2KeyPair
       ImageId: !Ref ImageId 
@@ -52,9 +38,9 @@ Resources:
           Value: !Sub backend-${WORKFLOW}
 
 Outputs:
-  VPC:
+  EC2PublicDns:
     Description: A reference to the created EC2 URL
-    Value: !Ref EC2Instance
+    Value: !GetAtt EC2Instance.PublicDnsName
     Export:
-      Key: EC2-Public-DNS
+      Key: EC2Instance
       Name: !Sub ${WORKFLOW}-EC2
