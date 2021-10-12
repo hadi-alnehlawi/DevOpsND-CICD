@@ -54,6 +54,14 @@ Before you submit your project, please check your work against the project rubri
 - [Ansible](https://www.ansible.com/) - Configuration management tool
 - [Prometheus](https://prometheus.io/) - Monitoring tool
 
+### URLs
+URL01
+- https://github.com/hadi-alnehlawi/DevOpsND-CICD
+
+URL02
+- 
+
+
 ### License
 
 [License](LICENSE.md)
