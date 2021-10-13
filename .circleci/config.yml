@@ -163,11 +163,15 @@ jobs:
           name: Add back-end ip to ansible inventory
           working_directory: ./.circleci/ansible
           command: |
-            aws ec2 describe-instances \
-              --query 'Reservations[*].Instances[*].PublicIpAddress' \
-              --filters "Name=tag:Name,Values=backend-${WORKFLOW}" \
-              --output text > inventory.txt
-            cat inventory.txt
+            ip=$(aws ec2 describe-instances \
+            --query 'Reservations[*].Instances[*].PublicIpAddress' \
+            --filters "Name=tag:project,Values=udacity" \
+            --output text)
+            echo "$ip"
+            echo "$ip" >> inventory.txt
+            curl -H "Content-Type: text/plain" -H "token: IP-${WORKFLOW}" \
+            --request PUT \
+            --data "$ip" https://api.memstash.io/values/IP
       - run:
             name: Dependencies
             command: |
@@ -222,7 +226,8 @@ jobs:
           command: |
             ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/configure-server.yml
       # Here's where you will add some code to rollback on failure      
-
+      - revert-migrations
+      - destroy-environment 
   run-migrations:
     docker:
       # Docker image here that supports NodeJS
@@ -260,29 +265,41 @@ jobs:
             --request PUT \
             --data "0" https://api.memstash.io/values/migration-${WORKFLOW}
             fi
-     # Here's where you will add some code to rollback on failure      
-
-  # deploy-frontend:
-  #   docker:
-  #     # Docker image here that supports AWS CLI
-  #   steps:
-  #     # Checkout code from git
-  #     - run:
-  #         name: Install dependencies
-  #         command: |
-  #           # your code here
-  #     - run:
-  #         name: Get backend url
-  #         command: |
-  #           # your code here
-  #           export API_URL="http://${BACKEND_IP}:3030"
-  #           echo "${API_URL}"
-  #     - run:
-  #         name: Deploy frontend objects
-  #         command: |
-  #           # your code here
-  #     # Here's where you will add some code to rollback on failure      
-                    
+      # Here's where you will add some code to rollback on failure      
+      - revert-migrations
+      - destroy-environment 
+  deploy-frontend:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            # your code here
+            sudo apt-get update && sudo apt-get install -yy less
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
+      - run:
+          name: Get backend url
+          command: |
+           BACKEND_IP=$(curl -H "token: IP-${WORKFLOW}" \
+            --request GET https://api.memstash.io/values/IP)
+            export API_URL="http://${BACKEND_IP}:3030"
+            echo API_URL="http://${BACKEND_IP}:3030" >> "frontend/.env"
+            echo "${API_URL}"
+      - run:
+          name: Deploy frontend objects
+          command: |
+            npm install webpack-dev-server -g
+            cd frontend
+            npm install
+            npm run build
+            aws s3 cp ./dist s3://udapeople-${WORKFLOW} --recursive
+      # Here's where you will add some code to rollback on failure      
+      - revert-migrations
+      - destroy-environment 
   # deploy-backend:
   #   docker:
   #     # Docker image here that supports Ansible
@@ -380,8 +397,8 @@ workflows:
           requires: [deploy-infrastructure]
       - run-migrations:
           requires: [configure-infrastructure]
-      # - deploy-frontend:
-      #     requires: [run-migrations]
+      - deploy-frontend:
+          requires: [run-migrations]
       # - deploy-backend:
       #     requires: [run-migrations]
       # - smoke-test:
