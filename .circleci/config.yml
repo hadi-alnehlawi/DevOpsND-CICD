@@ -299,22 +299,28 @@ jobs:
       # Here's where you will add some code to rollback on failure      
       - revert-migrations
       - destroy-environment 
-  # deploy-backend:
-  #   docker:
-  #     # Docker image here that supports Ansible
-  #   steps:
-  #     # Checkout code from git
-  #     # Add ssh keys with fingerprint
-  #     # attach workspace
-  #     - run:
-  #         name: Install dependencies
-  #         command: |
-  #           # your code here
-  #     - run:
-  #         name: Deploy backend
-  #         command: |
-  #           # your code here
-      # Here's where you will add some code to rollback on failure  
+  deploy-backend:
+    docker:
+      # Docker image here that supports Ansible
+      - image: python:3.7-alpine3.11
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints: ["ed:e9:83:cf:43:79:b8:a7:92:3b:e6:66:18:06:61:83"]
+      - attach_workspace:
+          at: .circleci/ansible
+      - run:
+          name: Install dependencies
+          command: |
+            # your code here
+            apk add --update ansible
+            apk add --update tar gzip curl
+            apk add --update openssh-client
+      - run:
+          name: Deploy backend
+          command: |
+            # your code here
+      Here's where you will add some code to rollback on failure  
 
   # smoke-test:
   #   docker:
