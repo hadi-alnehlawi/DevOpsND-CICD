@@ -21,12 +21,6 @@ Parameters:
     Type: String
     Default: 10.0.1.0/24
 
-  Parameters:
-    LatestAmiId:
-      Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
-      Default: '/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2'
-
-
 Resources:
   VPC:
     Type: AWS::EC2::VPC
@@ -37,10 +31,7 @@ Resources:
         - Key: Name
           Value: !Sub ${WORKFLOW} VPC 
 
-  Instance:
-      Type: 'AWS::EC2::Instance'
-      Properties:
-        ImageId: !Ref LatestAmiId
+
 
   InternetGateway:
     Type: AWS::EC2::InternetGateway
