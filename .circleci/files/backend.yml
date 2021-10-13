@@ -19,7 +19,6 @@ Parameters:
     Type: String
     Default: udacity
 
-
 Resources:
 
   EC2Instance:
