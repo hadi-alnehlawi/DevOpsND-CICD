@@ -191,17 +191,17 @@ jobs:
           root: .circleci/ansible
           paths:
             - inventory.txt
-      # - run:
-      #     name: LogOnFail
-      #     when: on_fail
-      #     command: |
-      #       cat /home/circleci/.npm/_logs/*-debug.log
-      #       ls -la
-      #       cat backend/migration.txt
-      #   # Rollback on failure      
-      #   # Here's where you will add some code to rollback on failure      
-      # - revert-migrations
-      # - destroy-environment 
+      - run:
+          name: LogOnFail
+          when: on_fail
+          command: |
+            cat /home/circleci/.npm/_logs/*-debug.log
+            ls -la
+            cat backend/migration.txt
+        # Rollback on failure      
+        # Here's where you will add some code to rollback on failure      
+      - revert-migrations
+      - destroy-environment 
      
   configure-infrastructure:
     docker:
