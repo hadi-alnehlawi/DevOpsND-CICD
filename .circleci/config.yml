@@ -180,17 +180,17 @@ jobs:
             curl -H "Content-Type: text/plain" -H "token: IP-${WORKFLOW}" \
             --request PUT \
             --data "$ip" https://api.memstash.io/values/IP
-      # - run:
-      #       name: Dependencies
-      #       command: |
-      #         cat .circleci/ansible/inventory.txt
-      #         ls ~/project/.circleci/ansible/
-      #         cat ~/project/.circleci/ansible/inventory.txt
-      #         yum -y install tar gzip jq npm
-      # - persist_to_workspace:
-      #     root: .circleci/ansible
-      #     paths:
-      #       - inventory.txt
+      - run:
+            name: Dependencies
+            command: |
+              cat .circleci/ansible/inventory.txt
+              ls ~/project/.circleci/ansible/
+              cat ~/project/.circleci/ansible/inventory.txt
+              yum -y install tar gzip jq npm
+      - persist_to_workspace:
+          root: .circleci/ansible
+          paths:
+            - inventory.txt
       # - run:
       #     name: LogOnFail
       #     when: on_fail
