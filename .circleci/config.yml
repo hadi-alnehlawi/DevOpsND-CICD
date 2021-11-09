@@ -151,42 +151,42 @@ jobs:
               --tags env=udacpeople \
               --stack-name "udapeople-network" \
               --parameter-overrides ID="${WORKFLOW}"
-      - run:
-          name: Ensure back-end infrastructure exists
-          command: |
-            aws cloudformation deploy \
-              --template-file .circleci/files/backend.yml \
-              --tags env=udacpeople \
-              --stack-name "udapeople-backend" \
-              --parameter-overrides ID="${WORKFLOW}"
-      - run:
-          name: Ensure front-end infrastructure exist
-          command: |
-            aws cloudformation deploy \
-              --template-file .circleci/files/frontend.yml \
-              --tags env=udacpeople \
-              --stack-name "udapeople-fronend" \
-              --parameter-overrides ID="${WORKFLOW}"
-      - run:
-          name: Add back-end ip to ansible inventory
-          working_directory: ./.circleci/ansible
-          command: |
-            ip=$(aws ec2 describe-instances \
-            --query 'Reservations[*].Instances[*].PublicIpAddress' \
-            --filters "Name=tag:project,Values=udacity" \
-            --output text)
-            echo "$ip"
-            echo "$ip" >> inventory.txt
-            curl -H "Content-Type: text/plain" -H "token: IP-${WORKFLOW}" \
-            --request PUT \
-            --data "$ip" https://api.memstash.io/values/IP
-      - run:
-            name: Dependencies
-            command: |
-              cat .circleci/ansible/inventory.txt
-              ls ~/project/.circleci/ansible/
-              cat ~/project/.circleci/ansible/inventory.txt
-              yum -y install tar gzip jq npm
+      # - run:
+      #     name: Ensure back-end infrastructure exists
+      #     command: |
+      #       aws cloudformation deploy \
+      #         --template-file .circleci/files/backend.yml \
+      #         --tags env=udacpeople \
+      #         --stack-name "udapeople-backend" \
+      #         --parameter-overrides ID="${WORKFLOW}"
+      # - run:
+      #     name: Ensure front-end infrastructure exist
+      #     command: |
+      #       aws cloudformation deploy \
+      #         --template-file .circleci/files/frontend.yml \
+      #         --tags env=udacpeople \
+      #         --stack-name "udapeople-fronend" \
+      #         --parameter-overrides ID="${WORKFLOW}"
+      # - run:
+      #     name: Add back-end ip to ansible inventory
+      #     working_directory: ./.circleci/ansible
+      #     command: |
+      #       ip=$(aws ec2 describe-instances \
+      #       --query 'Reservations[*].Instances[*].PublicIpAddress' \
+      #       --filters "Name=tag:project,Values=udacity" \
+      #       --output text)
+      #       echo "$ip"
+      #       echo "$ip" >> inventory.txt
+      #       curl -H "Content-Type: text/plain" -H "token: IP-${WORKFLOW}" \
+      #       --request PUT \
+      #       --data "$ip" https://api.memstash.io/values/IP
+      # - run:
+      #       name: Dependencies
+      #       command: |
+      #         cat .circleci/ansible/inventory.txt
+      #         ls ~/project/.circleci/ansible/
+      #         cat ~/project/.circleci/ansible/inventory.txt
+      #         yum -y install tar gzip jq npm
       - persist_to_workspace:
           root: .circleci/ansible
           paths:
