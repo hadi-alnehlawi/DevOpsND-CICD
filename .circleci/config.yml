@@ -159,14 +159,14 @@ jobs:
               --tags env=udacpeople \
               --stack-name "udapeople-backend" \
               --parameter-overrides ID="${WORKFLOW}"
-      # - run:
-      #     name: Ensure front-end infrastructure exist
-      #     command: |
-      #       aws cloudformation deploy \
-      #         --template-file .circleci/files/frontend.yml \
-      #         --tags env=udacpeople \
-      #         --stack-name "fronend" \
-      #         --parameter-overrides ID="${WORKFLOW}"
+      - run:
+          name: Ensure front-end infrastructure exist
+          command: |
+            aws cloudformation deploy \
+              --template-file .circleci/files/frontend.yml \
+              --tags env=udacpeople \
+              --stack-name "fronend" \
+              --parameter-overrides ID="${WORKFLOW}"
       # - run:
       #     name: Add back-end ip to ansible inventory
       #     working_directory: ./.circleci/ansible
