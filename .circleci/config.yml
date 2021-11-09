@@ -151,14 +151,14 @@ jobs:
               --tags env=udacpeople \
               --stack-name "udapeople-network" \
               --parameter-overrides ID="${WORKFLOW}"
-      # - run:
-      #     name: Ensure back-end infrastructure exists
-      #     command: |
-      #       aws cloudformation deploy \
-      #         --template-file .circleci/files/backend.yml \
-      #         --tags env=udacpeople \
-      #         --stack-name "udapeople-backend" \
-      #         --parameter-overrides ID="${WORKFLOW}"
+      - run:
+          name: Ensure back-end infrastructure exists
+          command: |
+            aws cloudformation deploy \
+              --template-file .circleci/files/backend.yml \
+              --tags env=udacpeople \
+              --stack-name "udapeople-backend" \
+              --parameter-overrides ID="${WORKFLOW}"
       # - run:
       #     name: Ensure front-end infrastructure exist
       #     command: |
