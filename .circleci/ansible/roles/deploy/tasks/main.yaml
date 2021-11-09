@@ -30,13 +30,13 @@
     tar xvzf artifact.tar.gz -C .
     ls -la
     
-- name: "Build COPY"
-  become: yes
-  shell: |
-    cd /home/ubuntu/backend
-  copy:
-    src: /home/backend.tar.gz
-    dest: /home/ubuntu/backend.tar.gz
+# - name: "Build COPY"
+#   become: yes
+#   shell: |
+#     cd /home/ubuntu/backend
+#   copy:
+#     src: /home/backend.tar.gz
+#     dest: /home/ubuntu/backend.tar.gz
     
 - name: "copy backend binaries"
   become: yes
