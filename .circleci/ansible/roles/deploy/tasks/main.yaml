@@ -34,7 +34,6 @@
   become: true
   shell: |
     cd /home/ubuntu/backend- name: Copy backend files
-  become: true
   copy:
     src: /home/backend.tar.gz
     dest: /home/ubuntu/backend.tar.gz
