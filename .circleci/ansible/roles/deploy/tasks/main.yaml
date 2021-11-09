@@ -30,7 +30,7 @@
     tar xvzf artifact.tar.gz -C .
     ls -la
     
-- name: Build
+- name: "Build"
   become: yes
   shell: |
     cd /home/ubuntu/backend- name: Copy backend files
