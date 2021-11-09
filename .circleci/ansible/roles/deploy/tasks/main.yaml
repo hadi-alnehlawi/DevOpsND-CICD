@@ -31,7 +31,7 @@
     ls -la
     
 - name: Build
-  become: true
+  become: yes
   shell: |
     cd /home/ubuntu/backend- name: Copy backend files
   copy:
