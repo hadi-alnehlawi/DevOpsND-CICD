@@ -381,7 +381,6 @@ jobs:
               fi
       - revert-migrations
       - destroy-environment # Rollback on failure
-
 #   cloudfront-update:
 #     docker:
 #       # Docker image here that supports AWS CLI
