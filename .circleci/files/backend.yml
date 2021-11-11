@@ -27,9 +27,9 @@ Resources:
       SubnetId:
         Fn::ImportValue:
           !Sub "${WORKFLOW}-PUB1-SN"
-      # SecurityGroups: 
-      #   - Fn::ImportValue:
-      #       !Sub "${WORKFLOW}-SEC-GROUP"
+      SecurityGroups: 
+        - Fn::ImportValue:
+            !Sub "${WORKFLOW}-SEC-GROUP"
       InstanceType: !Ref InstanceType
       KeyName: !Ref EC2KeyPair
       ImageId: !Ref ImageId 
