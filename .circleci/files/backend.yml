@@ -54,6 +54,7 @@ Resources:
           CidrIp: 0.0.0.0/0
 
 
+
 Outputs:
   EC2PublicDns:
     Description: A reference to the created EC2 URL
