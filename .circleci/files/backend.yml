@@ -24,11 +24,11 @@ Resources:
   EC2Instance:
     Type: AWS::EC2::Instance
     Properties:
-      SubnetId:
-        Fn::ImportValue:
-          !Sub "${WORKFLOW}-PUB1-SN"
+      # SubnetId:
+      #   Fn::ImportValue:
+      #     !Sub "${WORKFLOW}-PUB1-SN"
       SecurityGroups: 
-        - Fn::ImportValue:
+        - Fn::ImportValue: 
             !Sub "${WORKFLOW}-SEC-GROUP"
       InstanceType: !Ref InstanceType
       KeyName: !Ref EC2KeyPair
