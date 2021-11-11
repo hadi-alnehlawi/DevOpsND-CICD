@@ -23,9 +23,11 @@ Resources:
   EC2Instance:
     Type: AWS::EC2::Instance
     Properties:
-      SubnetId:
-        Fn::ImportValue:
-          !Sub "${WORKFLOW}-PUB1-SN"
+      SecurityGroups:
+        - Ref: InstanceSecurityGroup
+      # SubnetId:
+      #   Fn::ImportValue:
+      #     !Sub "${WORKFLOW}-PUB1-SN"
       # SecurityGroups: 
       #   - Fn::ImportValue: 
       #       !Sub "${WORKFLOW}-SEC-GROUP"
@@ -35,6 +37,21 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub backend-${WORKFLOW}
+
+  InstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: !Sub UdaPeople1-${ID}
+      GroupDescription: Allow port 22 and port 3030.
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 3030
+          ToPort: 3030
+          CidrIp: 0.0.0.0/0
 
 Outputs:
   EC2PublicDns:
