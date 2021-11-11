@@ -26,7 +26,7 @@ Resources:
     Properties:
       SubnetId:
         Fn::ImportValue:
-          !Sub "${WORKFLOW}-PUB1-SN"      
+          !Sub "${WORKFLOW}-PUB1-SN"
       # SecurityGroups: 
       #   - Fn::ImportValue: 
       #       !Sub "${WORKFLOW}-SEC-GROUP"
