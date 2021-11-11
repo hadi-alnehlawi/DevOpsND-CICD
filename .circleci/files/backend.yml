@@ -36,7 +36,6 @@ Resources:
         - Key: Name
           Value: !Sub backend-${WORKFLOW}
 
-
 Outputs:
   EC2PublicDns:
     Description: A reference to the created EC2 URL
