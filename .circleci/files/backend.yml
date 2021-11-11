@@ -44,3 +44,4 @@ Outputs:
     Export:
       Key: EC2Instance
       Name: !Sub ${WORKFLOW}-EC2
+
