@@ -9,7 +9,7 @@ Parameters:
   ImageId:
     Description: EC2 Image ID
     Type: String
-    Default: ami-01492a4213f43e120
+    Default: ami-0ed2b3edeb28afa59
   InstanceType:
     Description: EC2 Instance Type ex. t2.micro
     Type: String
