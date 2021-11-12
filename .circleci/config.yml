@@ -143,14 +143,6 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
-      # - run:
-      #     name: Ensure network infrastructure exists
-      #     command: |
-      #       aws cloudformation deploy \
-      #         --template-file .circleci/files/network.yml \
-      #         --tags env=udacpeople \
-      #         --stack-name "network" \
-      #         --parameter-overrides ID="${WORKFLOW}"
       - run:
           name: Ensure back-end infrastructure exists
           command: |
@@ -173,7 +165,7 @@ jobs:
           command: |
             ip=$(aws ec2 describe-instances \
             --query 'Reservations[*].Instances[*].PublicIpAddress' \
-            --filters "Name=tag:project,Values=udacity" \
+            --filters "Name=tag:Name,Values=backend-${WORKFLOW}" \
             --output text)
             echo "$ip"
             echo "$ip" >> inventory.txt
