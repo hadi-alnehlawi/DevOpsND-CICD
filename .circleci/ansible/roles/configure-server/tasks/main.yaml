@@ -1,41 +1,74 @@
+# ---
+#   - name: "update apt packages."
+#     become: yes
+#     apt:
+#       update_cache: yes
+
+#   - name: "upgrade packages"
+#     become: yes
+#     apt:
+#       upgrade: yes
+
+#   - name: "remove dependencies that are no longer required"
+#     become: yes
+#     apt:
+#       autoremove: yes
+
+#   - name: "install nodejs and npm"
+#     become: yes
+#     apt:
+#       name: ["nodejs", "npm"]
+#       state: latest
+#       update_cache: yes
+
+#   - name: "install n"
+#     become: yes
+#     npm:
+#       name: n
+#       global: yes
+#       production: yes
+
+#   - name: "install nodejs 13.8.0"
+#     become: yes
+#     shell: n 13.8.0
+
+#   - name: "install pm2"
+#     become: yes
+#     npm:
+#       name: pm2
+#       global: yes
+#       production: yes
+#       state: present
+
+
+
 ---
-  - name: "update apt packages."
-    become: yes
-    apt:
-      update_cache: yes
+- name: "wait 60 seconds for target connection to become reachable/usable."
+  wait_for_connection:     
+    timeout: 60
 
-  - name: "upgrade packages"
-    become: yes
-    apt:
-      upgrade: yes
+- name: "Install Ansible dependencies"
+  become: true
+  apt:
+    name: ["nodejs", "npm", "python3", "tar", "gzip", "git", "pm2"]
+    state: latest
+    update_cache: yes
 
-  - name: "remove dependencies that are no longer required"
-    become: yes
-    apt:
-      autoremove: yes
+- name: "Create directory for backend"
+  file:
+    path: /home/ubuntu/backend/
+    state: directory
 
-  - name: "install nodejs and npm"
-    become: yes
-    apt:
-      name: ["nodejs", "npm"]
-      state: latest
-      update_cache: yes
+- name: "Copy backend files"
+  become: yes
+  synchronize:
+    src: ../../backend
+    dest: /home/ubuntu
+    recursive: true
 
-  - name: "install n"
-    become: yes
-    npm:
-      name: n
-      global: yes
-      production: yes
 
-  - name: "install nodejs 13.8.0"
-    become: yes
-    shell: n 13.8.0
-
-  - name: "install pm2"
-    become: yes
-    npm:
-      name: pm2
-      global: yes
-      production: yes
-      state: present
+- name: "Start server"
+  become: true
+  command: pm2 start npm -- run start
+  args:
+    chdir: /home/ubuntu/backend
