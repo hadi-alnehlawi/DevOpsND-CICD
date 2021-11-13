@@ -170,6 +170,7 @@ jobs:
             echo "$ip"
             echo "BEFOREEEEEEEEE"
             cat inventory.txt
+            echo ""
             echo "$ip" >> inventory.txt
             echo "AFTERRRRRRRRRRRRR"
             cat inventory.txt
