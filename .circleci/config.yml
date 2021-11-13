@@ -203,10 +203,8 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
-      # Add ssh keys with fingerprint
       - add_ssh_keys:
           fingerprints: ["a0:a2:96:f8:e0:b4:ef:65:92:63:5e:c5:ba:fc:4c:8e"]
-      # attach workspace
       - attach_workspace:
           at: .circleci/ansible
       - run:
@@ -314,8 +312,15 @@ jobs:
           at: .circleci/ansible
       - run:
           name: Install dependencies
+          working_directory: ./.circleci/ansible
           command: |
-            # your code here
+            apk add --no-cache \
+            python3 \
+            py3-pip \
+            && pip3 install --upgrade pip \
+            && pip3 install \
+            awscli \
+            && rm -rf /var/cache/apk/*
             apk add --update ansible
             apk add --update tar gzip curl
             apk add --update openssh-client
@@ -329,7 +334,6 @@ jobs:
       - run:
           name: Deploy backend
           command: |
-            # your code here
             ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/deploy-backend.yml
       - revert-migrations
       - destroy-environment # Rollback on failure  
