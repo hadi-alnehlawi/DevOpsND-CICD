@@ -10,7 +10,6 @@
     - ansible_stdout_callback: yaml
 
   pre_tasks:
-    # Your code here
     - name: "wait 100 seconds for target connection to become reachable/usable."
       wait_for_connection:
         timeout: 100

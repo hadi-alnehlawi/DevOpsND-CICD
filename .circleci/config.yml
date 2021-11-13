@@ -167,7 +167,6 @@ jobs:
             --query 'Reservations[*].Instances[*].PublicIpAddress' \
             --filters "Name=tag:Name,Values=backend-${WORKFLOW}" \
             --output text)
-            echo "$ip"
             echo "" >> inventory.txt
             echo "$ip" >> inventory.txt
             cat inventory.txt
