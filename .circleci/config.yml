@@ -329,7 +329,7 @@ jobs:
           name: Deploy backend
           command: |
             # your code here
-            ansible-playbook -i circleci/ansible/inventory.txt .circleci/ansible/deploy-backend.yml
+            ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/deploy-backend.yml
       - revert-migrations
       - destroy-environment # Rollback on failure  
 
