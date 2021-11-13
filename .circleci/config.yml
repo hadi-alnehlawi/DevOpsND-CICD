@@ -167,8 +167,7 @@ jobs:
             --query 'Reservations[*].Instances[*].PublicIpAddress' \
             --filters "Name=tag:Name,Values=backend-${WORKFLOW}" \
             --output text)
-            export "$ip" >> inventory.txt
-            echo "INVVVV"
+            echo "$ip" >> inventory.txt
             cat inventory.txt
             curl -H "Content-Type: text/plain" -H "token: IP-${WORKFLOW}" \
             --request PUT \
