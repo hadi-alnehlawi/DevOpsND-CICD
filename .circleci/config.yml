@@ -168,11 +168,8 @@ jobs:
             --filters "Name=tag:Name,Values=backend-${WORKFLOW}" \
             --output text)
             echo "$ip"
-            echo "BEFOREEEEEEEEE"
-            cat inventory.txt
-            echo ""
+            echo "" >> inventory.txt
             echo "$ip" >> inventory.txt
-            echo "AFTERRRRRRRRRRRRR"
             cat inventory.txt
             curl -H "Content-Type: text/plain" -H "token: IP-${WORKFLOW}" \
             --request PUT \
