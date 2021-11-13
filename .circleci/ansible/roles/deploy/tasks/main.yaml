@@ -1,76 +1,18 @@
 ---
-- name: "install dependencies."
-  become: true
-  apt:
-    name: ["nodejs", "npm"]
-    state: latest
-    update_cache: yes
-
-- name: "install pm2"
-  become: true
-  npm:
-    name: pm2
-    global: yes
-    production: yes
-    state: present
-
-- name: Creates directory
+- name: 'Create directory'
   file:
     path: /home/ubuntu/backend
     state: directory
 
-- name: Copy backend dist files web server
-  copy:
-    src: /root/project/artifact.tar.gz
-    dest: /home/ubuntu/backend/artifact.tar.gz
+- name: 'Copy backend tar.gz file and unzip it'
+  become: yes
+  unarchive:
+    src: backend.tar.gz
+    dest: /home/ubuntu
 
-- name: Uncompress Backend
+- name: 'Start backend'
+  become: true
   shell: |
     cd /home/ubuntu/backend
-    tar xvzf artifact.tar.gz -C .
-    ls -la
-    
-- name: "copy backend binaries"
-  become: yes
-  synchronize:
-    src: ../../backend/dist
-    dest: /home/ubuntu/backend
-    recursive: true
-
-- name: "copy node_modules"
-  become: yes
-  synchronize:
-    src: ../../backend/node_modules
-    dest: /home/ubuntu/backend
-    recursive: true
-    
-- name: "copy packages"
-  become: yes
-  synchronize:
-    src: ../../backend
-    dest: /home/ubuntu/backend
-    recursive: false
-
-- name: Prepare Env
-  shell: |
-    sudo npm i
-    npm i pm2 -g
-    sudo npm i npm@latest -g
-    sudo npm i webpack-dev-server -g
-  args:
-    chdir: /home/ubuntu/backend/dist
-    
-- name: Start PM2
-  become: true
-  command: pm2 start main.js --update-env
-  args:
-    chdir: /home/ubuntu/backend/dist
-  environment:
-    ENVIRONMENT: production
-    TYPEORM_CONNECTION: "{{ lookup('env', 'TYPEORM_CONNECTION') }}"
-    TYPEORM_MIGRATIONS_DIR: "./migrations"
-    TYPEORM_MIGRATIONS: "./migrations/*.js"
-    TYPEORM_ENTITIES: "./modules/domain/*/entities/*.entity.js"
-    TYPEORM_HOST: "{{ lookup('env', 'TYPEORM_HOST') }}"
-    TYPEORM_PORT: "{{ lookup('env', 'TYPEORM_PORT') }}"
-    TYPEORM_USERNAME: "{{ lookup('env', 'TYPEORM_USERNAME') }}"
+    pm2 start npm --name backend -- start
+    pm2 ls
