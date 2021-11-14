@@ -323,6 +323,7 @@ jobs:
             apk add --update ansible
             apk add --update tar gzip curl
             apk add --update openssh-client
+            apk add --update nodejs npm
       - run:
           name: Build Backend Files
           command: |
