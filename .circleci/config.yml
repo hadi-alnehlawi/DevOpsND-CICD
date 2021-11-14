@@ -324,15 +324,24 @@ jobs:
             apk add --update tar gzip curl
             apk add --update openssh-client
       - run:
-          name: Compress dist Files
+          name: Build Backend Files
           command: |
-            echo "DISPLAY PWD>>>>>>>"
-            pwd
+            cd backend
+            npm i
+            npm run build
+            cp package* ./dist
+            cd ..
+      - run:
+          name: Compress Dist Files
+          command: |
             tar -C backend -czvf artifact.tar.gz .
-            ls -la
+            pwd
+            cd .circleci/ansible
       - run:
           name: Deploy backend
           command: |
+            echo "Contents  of the inventory.txt file is -------"
+            cat inventory.txt
             ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/deploy-backend.yml
       - revert-migrations
       - destroy-environment # Rollback on failure  
