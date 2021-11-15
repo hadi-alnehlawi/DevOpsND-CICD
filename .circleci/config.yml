@@ -11,8 +11,8 @@ commands:
             if aws s3 ls | grep udapeople-${WORKFLOW}; then
               aws s3 rm s3://udapeople-${WORKFLOW} --recursive
             fi
-            aws cloudformation delete-stack --stack-name frontend-<<parameters.workflow_id>>
-            aws cloudformation delete-stack --stack-name backend-<<parameters.workflow_id>>
+            aws cloudformation delete-stack --stack-name frontend-${WORKFLOW}>
+            aws cloudformation delete-stack --stack-name backend-${WORKFLOW}
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.   
