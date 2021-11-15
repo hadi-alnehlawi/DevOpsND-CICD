@@ -40,3 +40,5 @@ override.tf.json
 # example: *tfplan*
 new_user_credentials.csv
 *.tfvars
+
+venv
