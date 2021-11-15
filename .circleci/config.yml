@@ -376,7 +376,8 @@ jobs:
       - run:
           name: Frontend smoke test.
           command: |
-              URL="http://udapeople-${WORKFLOW}.s3-website-us-east-1.amazonaws.com/#/employees"            
+              echo ${AWS_DEFAULT_REGION}
+              URL="http://udapeople-${WORKFLOW}.s3-website-${AWS_DEFAULT_REGION}.amazonaws.com/#/employees"            
               echo ${URL} 
               if curl -s ${URL} | grep "Welcome"
               then
