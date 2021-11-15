@@ -151,7 +151,7 @@ jobs:
               --template-file .circleci/files/backend.yml \
               --tags env=udacpeople-${CIRCLE_WORKFLOW_ID} \
               --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID}" \
-              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID}"
+              --parameter-overrides WORKFLOW="${CIRCLE_WORKFLOW_ID}"
       - run:
           name: Ensure front-end infrastructure exist
           command: |
@@ -159,7 +159,7 @@ jobs:
               --template-file .circleci/files/frontend.yml \
               --tags env=udacpeople-${CIRCLE_WORKFLOW_ID} \
               --stack-name "udapeople-fronend-${CIRCLE_WORKFLOW_ID}" \
-              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID}"
+              --parameter-overrides WORKFLOW="${CIRCLE_WORKFLOW_ID}"
       - run:
           name: Add back-end ip to ansible inventory
           working_directory: ./.circleci/ansible
@@ -403,7 +403,7 @@ jobs:
             aws cloudformation deploy \
             --template-file .circleci/files/cloudfront.yml \
             --stack-name "udapeople-cloudfront-${CIRCLE_WORKFLOW_ID}" \
-            --parameter-overrides ID="${CIRCLE_WORKFLOW_ID}" \
+            --parameter-overrides WORKFLOW="${CIRCLE_WORKFLOW_ID}" \
             --tags env=udacpeople
       # Here's where you will add some code to rollback on failure  
 

@@ -5,7 +5,6 @@ Parameters:
   WORKFLOW:
     Description: Unique identifier.
     Type: String
-    Default: 272091f
 
 Resources:
   

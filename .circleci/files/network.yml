@@ -4,7 +4,6 @@ Parameters:
   WORKFLOW:
     Description: An environment name that will be prefixed to resource names
     Type: String
-    Default: 272091f
 
   VpcCIDR:
     Description: Please enter the IP range (CIDR notation) for this VPC
